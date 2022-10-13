@@ -1,0 +1,26 @@
+{
+  "name": "serverless-bla-bla-car",
+  "version": "1.0.0",
+  "description": "Rides app in serverless",
+  "main": "index.js",
+  "scripts": {
+    "deploy": "sls deploy --verbose"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ahd3r/dynamodb-bla-bla-car.git"
+  },
+  "author": "Ander",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ahd3r/dynamodb-bla-bla-car/issues"
+  },
+  "homepage": "https://github.com/ahd3r/dynamodb-bla-bla-car#readme",
+  "dependencies": {
+    "aws-sdk": "^2.1231.0",
+    "bcrypt": "^5.1.0",
+    "joi": "^17.6.3",
+    "jsonwebtoken": "^8.5.1",
+    "pino": "^8.6.1"
+  }
+}
