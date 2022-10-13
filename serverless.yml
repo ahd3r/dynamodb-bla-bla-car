@@ -24,7 +24,7 @@ provider:
 functions:
   test:
     handler: index.test
-    role: lambdaRole
+    role: lambdaRole5
     events:
       - httpApi:
           path: /
@@ -32,11 +32,11 @@ functions:
 
 resources:
   Resources:
-    lambdaRole:
+    lambdaRole5:
       Type: AWS::IAM::Role
       Properties:
         Path: /
-        RoleName: lambdaRole
+        RoleName: lambdaRole5
         AssumeRolePolicyDocument:
           Version: '2012-10-17'
           Statement:
