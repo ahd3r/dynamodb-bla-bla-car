@@ -86,6 +86,8 @@ resources:
                 KeyType: HASH
               - AttributeName: created
                 KeyType: RANGE
+            Projection:
+              ProjectionType: 'ALL'
         LocalSecondaryIndexes:
           - IndexName: UserAndAdminEmailIndex
             KeySchema:
@@ -93,6 +95,8 @@ resources:
                 KeyType: HASH
               - AttributeName: email
                 KeyType: RANGE
+            Projection:
+              ProjectionType: 'ALL'
           - IndexName: RideToIndex
             KeySchema:
               - AttributeName: entity
@@ -105,10 +109,14 @@ resources:
                 KeyType: HASH
               - AttributeName: from
                 KeyType: RANGE
+            Projection:
+                ProjectionType: 'ALL'
           - IndexName: AdminChatIndex
             KeySchema:
               - AttributeName: entity
                 KeyType: HASH
               - AttributeName: adminId
                 KeyType: RANGE
+            Projection:
+                ProjectionType: 'ALL'
         TableName: ${self:service}-table
