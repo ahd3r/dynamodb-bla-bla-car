@@ -3,7 +3,7 @@ name: Deploy to Amazon Serverless
 on:
   push:
     branches:
-      - dev
+      - main
 
 jobs:
   deploy:
