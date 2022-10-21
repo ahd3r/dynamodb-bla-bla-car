@@ -89,8 +89,8 @@ const createRide = middy(async (event, context) => {
       }
     })
   )
-  .use(errorHandler)
   .use(defineJSONResponse)
-  .use(logRes);
+  .use(logRes)
+  .use(errorHandler);
 
 module.exports = { getRides, createRide };

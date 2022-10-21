@@ -47,21 +47,31 @@ const checkAuthorization = {
 const errorHandler = {
   onError: (request) => {
     console.error(request.error);
-    // if (!request.error.status) {
-    //   if (request.error.details) {
-    //     request.error = new ValidationError(request.error.details);
-    //   } else {
-    //     request.error = new ServerError(request.error.message || request.error);
-    //   }
-    // }
+    if (!request.error.status) {
+      if (request.error.details) {
+        request.error = new ValidationError(request.error.details);
+      } else {
+        request.error = new ServerError(request.error.message || request.error);
+      }
+    }
     request.response = {
       statusCode: request.error.status,
-      body: {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
         error: request.error.message,
         type: request.error.type,
         errors: request.error.errors
-      }
+      })
     };
+    logger.info({
+      type: 'response',
+      awsRequestId: request.context.awsRequestId,
+      method: request.event.requestContext.http.method,
+      path: request.event.requestContext.http.path,
+      responseBody: JSON.parse(request.response.body)
+    });
   }
 };
 
