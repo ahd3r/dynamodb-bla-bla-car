@@ -93,15 +93,29 @@ const handler = middy()
   .use(httpErrorHandler())
   .use({
     after: (...args) => {
-      console.log('after');
+      console.log('after 1');
       console.log(args);
     },
     before: (...args) => {
-      console.log('before');
+      console.log('before 1');
       console.log(args);
     },
     onError: (...args) => {
-      console.log('error');
+      console.log('error 1');
+      console.log(args);
+    }
+  })
+  .use({
+    after: (...args) => {
+      console.log('after 2');
+      console.log(args);
+    },
+    before: (...args) => {
+      console.log('before 2');
+      console.log(args);
+    },
+    onError: (...args) => {
+      console.log('error 2');
       console.log(args);
     }
   })
