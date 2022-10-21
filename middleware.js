@@ -54,13 +54,11 @@ const errorHandler = {
         request.error = new ServerError(request.error.message || request.error);
       }
     }
-    request.response = {
-      statusCode: request.error.status,
-      body: {
-        error: request.error.message,
-        type: request.error.type,
-        errors: request.error.errors
-      }
+    request.response.statusCode = request.error.status;
+    request.response.body = {
+      error: request.error.message,
+      type: request.error.type,
+      errors: request.error.errors
     };
   }
 };
