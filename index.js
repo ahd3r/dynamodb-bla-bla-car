@@ -57,8 +57,8 @@ const getRides = middy(async (event, context) => {
   };
 })
   .use(logReq)
-  .use(logRes)
   .use(defineJSONResponse)
+  .use(logRes)
   .use(errorHandler);
 
 const createRide = middy(async (event, context) => {
