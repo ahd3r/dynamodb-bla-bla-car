@@ -22,13 +22,20 @@ provider:
     TABLE_NAME: ${self:service}-table
 
 functions:
-  test:
-    handler: index.test
+  getRides:
+    handler: index.getRides
     role: lambdaRole5
     events:
       - httpApi:
-          path: /
+          path: /rides
           method: get
+  createRide:
+    handler: index.createRide
+    role: lambdaRole5
+    events:
+      - httpApi:
+          path: /ride
+          method: post
 
 resources:
   Resources:

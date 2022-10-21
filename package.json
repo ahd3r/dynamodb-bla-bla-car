@@ -18,7 +18,6 @@
   "homepage": "https://github.com/ahd3r/dynamodb-bla-bla-car#readme",
   "dependencies": {
     "@middy/core": "^3.6.2",
-    "@middy/http-error-handler": "^3.6.2",
     "@middy/http-json-body-parser": "^3.6.2",
     "@middy/validator": "^3.6.2",
     "aws-sdk": "^2.1231.0",

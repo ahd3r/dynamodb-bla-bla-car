@@ -38,88 +38,59 @@
  */
 const middy = require('@middy/core');
 const jsonBodyParser = require('@middy/http-json-body-parser');
-const httpErrorHandler = require('@middy/http-error-handler');
 const validator = require('@middy/validator');
 
-const { logger, ValidationError, ServerError } = require('./utils');
+const {
+  logReq,
+  logRes,
+  errorHandler,
+  defineJSONResponse,
+  checkAuthorization
+} = require('./middleware');
 
 const { SECRET, TOKEN, TABLE_NAME } = process.env;
 
-const test = async (event, context) => {
-  logger.info({
-    awsRequestId: context.awsRequestId,
-    method: event.requestContext.http.method,
-    queryStringParameters: event.queryStringParameters,
-    pathParameters: event.pathParameters,
-    body: event.body && JSON.parse(event.body),
-    headers: event.headers,
-    path: event.requestContext.http.path
-  });
+const getRides = middy(async (event, context) => {
+  return {
+    statusCode: 200,
+    body: { data: 'getRides' }
+  };
+})
+  .use(logReq)
+  .use(logRes)
+  .use(defineJSONResponse)
+  .use(errorHandler);
 
-  try {
-    if (event.headers.authorization !== process.env.SECRET) {
-      throw new ValidationError('Wrong authorization token');
-    }
-
-    return {
-      statusCode: 200,
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ data: 'test' })
-    };
-  } catch (error) {
-    console.error(error);
-    if (!error.status) {
-      if (error.details) {
-        error = new ValidationError(error.details);
-      } else {
-        error = new ServerError(error.message || error);
-      }
-    }
-    return {
-      statusCode: error.status,
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ error: error.message, type: error.type, errors: error.errors })
-    };
-  }
-};
-
-const handler = middy()
+const createRide = middy(async (event, context) => {
+  return {
+    statusCode: 201,
+    body: { data: 'createRide' }
+  };
+})
   .use(jsonBodyParser())
-  // .use(validator({}))
-  .use(httpErrorHandler())
-  .use({
-    after: (...args) => {
-      console.log('after 1');
-      console.log(args);
-    },
-    before: (...args) => {
-      console.log('before 1');
-      console.log(args);
-      throw 'test';
-    },
-    onError: (...args) => {
-      console.log('error 1');
-      console.log(args);
-    }
-  })
-  .use({
-    after: (...args) => {
-      console.log('after 2');
-      console.log(args);
-    },
-    before: (...args) => {
-      console.log('before 2');
-      console.log(args);
-    },
-    onError: (...args) => {
-      console.log('error 2');
-      console.log(args);
-    }
-  })
-  .handler(test);
+  .use(logReq)
+  .use(
+    validator({
+      inputSchema: {
+        type: 'object',
+        properties: {
+          body: {
+            type: 'object',
+            properties: {
+              fname: { type: 'string' },
+              lname: { type: 'string' },
+              prename: { type: 'string' }
+            },
+            required: ['fname', 'lname']
+          }
+        },
+        required: ['body']
+      }
+    })
+  )
+  .use(checkAuthorization)
+  .use(logRes)
+  .use(defineJSONResponse)
+  .use(errorHandler);
 
-module.exports = { test: handler };
+module.exports = { getRides, createRide };
