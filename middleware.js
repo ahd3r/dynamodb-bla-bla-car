@@ -56,14 +56,11 @@ const errorHandler = {
     // }
     request.response = {
       statusCode: request.error.status,
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
+      body: {
         error: request.error.message,
         type: request.error.type,
         errors: request.error.errors
-      })
+      }
     };
   }
 };
