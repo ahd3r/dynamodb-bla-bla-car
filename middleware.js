@@ -45,9 +45,10 @@ const checkAuthorization = {
 };
 
 const errorHandler = {
-  onError: ({ error, response }) => {
+  onError: (...args) => {
     console.log('errorHandler 123321123321');
-    console.log(response);
+    console.log(args);
+    const { error, response } = args;
     console.error(error);
     if (!error.status) {
       if (error.details) {
