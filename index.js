@@ -99,11 +99,11 @@ const handler = middy()
     before: (...args) => {
       console.log('before');
       console.log(args);
+    },
+    onError: (...args) => {
+      console.log('error');
+      console.log(args);
     }
-    // onError: (...args) => {
-    //   console.log('error');
-    //   console.log(args);
-    // }
   })
   .handler(test);
 
