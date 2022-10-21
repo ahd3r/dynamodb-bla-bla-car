@@ -95,6 +95,7 @@ const handler = middy()
     after: (...args) => {
       console.log('after 1');
       console.log(args);
+      throw 'test';
     },
     before: (...args) => {
       console.log('before 1');
