@@ -47,13 +47,13 @@ const checkAuthorization = {
 const errorHandler = {
   onError: (request) => {
     console.error(request.error);
-    if (!request.error.status) {
-      if (request.error.details) {
-        request.error = new ValidationError(request.error.details);
-      } else {
-        request.error = new ServerError(request.error.message || request.error);
-      }
-    }
+    // if (!request.error.status) {
+    //   if (request.error.details) {
+    //     request.error = new ValidationError(request.error.details);
+    //   } else {
+    //     request.error = new ServerError(request.error.message || request.error);
+    //   }
+    // }
     request.response = {
       statusCode: request.error.status,
       headers: {
