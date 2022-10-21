@@ -45,24 +45,22 @@ const checkAuthorization = {
 };
 
 const errorHandler = {
-  onError: (...args) => {
-    console.log('errorHandler 123321123321');
-    console.log(args);
-    const { error, response } = args;
-    console.error(error);
-    if (!error.status) {
-      if (error.details) {
-        error = new ValidationError(error.details);
+  onError: (request) => {
+    console.error(request.error);
+    if (!request.error.status) {
+      if (request.error.details) {
+        request.error = new ValidationError(request.error.details);
       } else {
-        error = new ServerError(error.message || error);
+        request.error = new ServerError(request.error.message || request.error);
       }
     }
-    response = {
-      statusCode: error.status,
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ error: error.message, type: error.type, errors: error.errors })
+    request.response = {
+      statusCode: request.error.status,
+      body: {
+        error: request.error.message,
+        type: request.error.type,
+        errors: request.error.errors
+      }
     };
   }
 };
