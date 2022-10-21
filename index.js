@@ -36,12 +36,16 @@
  *  or
  * steams
  */
+const middy = require('@middy/core');
+const jsonBodyParser = require('@middy/http-json-body-parser');
+const httpErrorHandler = require('@middy/http-error-handler');
+const validator = require('@middy/validator');
+
 const { logger, ValidationError, ServerError } = require('./utils');
 
 const { SECRET, TOKEN, TABLE_NAME } = process.env;
 
 const test = async (event, context) => {
-  console.log(SECRET, TOKEN, TABLE_NAME);
   logger.info({
     awsRequestId: context.awsRequestId,
     method: event.requestContext.http.method,
@@ -83,4 +87,24 @@ const test = async (event, context) => {
   }
 };
 
-module.exports = { test };
+const handler = middy()
+  .use(jsonBodyParser())
+  .use(validator({}))
+  .use(httpErrorHandler())
+  .use({
+    after: (...args) => {
+      console.log('after');
+      console.log(args);
+    },
+    before: (...args) => {
+      console.log('before');
+      console.log(args);
+    },
+    onError: (...args) => {
+      console.log('error');
+      console.log(args);
+    }
+  })
+  .handler(test);
+
+module.exports = { test: handler };
