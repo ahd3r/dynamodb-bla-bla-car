@@ -69,6 +69,7 @@ const createRide = middy(async (event, context) => {
 })
   .use(jsonBodyParser())
   .use(logReq)
+  .use(checkAuthorization)
   .use(
     validator({
       inputSchema: {
@@ -88,9 +89,8 @@ const createRide = middy(async (event, context) => {
       }
     })
   )
-  .use(checkAuthorization)
-  .use(logRes)
   .use(defineJSONResponse)
+  .use(logRes)
   .use(errorHandler);
 
 module.exports = { getRides, createRide };
