@@ -91,20 +91,20 @@ const handler = middy()
   .use(jsonBodyParser())
   // .use(validator({}))
   .use(httpErrorHandler())
-  // .use({
-  //   after: (...args) => {
-  //     console.log('after');
-  //     console.log(args);
-  //   },
-  //   before: (...args) => {
-  //     console.log('before');
-  //     console.log(args);
-  //   },
-  //   onError: (...args) => {
-  //     console.log('error');
-  //     console.log(args);
-  //   }
-  // })
+  .use({
+    after: (...args) => {
+      console.log('after');
+      console.log(args);
+    }
+    // before: (...args) => {
+    //   console.log('before');
+    //   console.log(args);
+    // },
+    // onError: (...args) => {
+    //   console.log('error');
+    //   console.log(args);
+    // }
+  })
   .handler(test);
 
 module.exports = { test: handler };
