@@ -63,8 +63,6 @@ const getRides = middy(async (event, context) => {
   .use(errorHandler);
 
 const createRide = middy(async (event, context) => {
-  logger.info({ body: event.body });
-  throw new ValidationError('Just No');
   return {
     statusCode: 201,
     body: { data: 'createRide' }
@@ -75,7 +73,7 @@ const createRide = middy(async (event, context) => {
   .use(checkAuthorization)
   .use(
     validator({
-      inputSchema: {
+      eventSchema: {
         type: 'object',
         properties: {
           body: {
@@ -89,6 +87,14 @@ const createRide = middy(async (event, context) => {
           }
         },
         required: ['body']
+      },
+      ajvOptions: {
+        strict: true,
+        strictSchema: true,
+        strictNumbers: true,
+        strictTypes: true,
+        strictTuples: true,
+        strictRequired: true
       }
     })
   )

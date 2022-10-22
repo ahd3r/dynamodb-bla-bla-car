@@ -46,17 +46,14 @@ const checkAuthorization = {
 
 const errorHandler = {
   onError: (request) => {
-    logger.info('error error error error error error error error');
     logger.error(request.error);
     if (!request.error.internal) {
-      logger.info('111111111111111111111111111');
       if (request.error.cause) {
         request.error = new ValidationError(request.error.cause);
       } else {
         request.error = new ServerError(request.error.message || request.error);
       }
     }
-    logger.info('2222222222222222222222222');
     request.response = {
       statusCode: request.error.status,
       headers: {
@@ -68,7 +65,6 @@ const errorHandler = {
         errors: request.error.errors
       })
     };
-    logger.info('333333333333333333333333333333');
     logger.info({
       type: 'response',
       awsRequestId: request.context.awsRequestId,
