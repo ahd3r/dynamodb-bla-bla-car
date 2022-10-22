@@ -49,12 +49,14 @@ const errorHandler = {
     console.log('error error error error error error error error');
     console.error(request.error);
     if (!request.error.internal) {
+      console.log('111111111111111111111111111');
       if (request.error.cause) {
         request.error = new ValidationError(request.error.cause);
       } else {
         request.error = new ServerError(request.error.message || request.error);
       }
     }
+    console.log('2222222222222222222222222');
     request.response = {
       statusCode: request.error.status,
       headers: {
@@ -66,6 +68,7 @@ const errorHandler = {
         errors: request.error.errors
       })
     };
+    console.log('333333333333333333333333333333');
     logger.info({
       type: 'response',
       awsRequestId: request.context.awsRequestId,
