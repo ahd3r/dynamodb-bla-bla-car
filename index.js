@@ -38,14 +38,15 @@
  */
 const middy = require('@middy/core');
 const jsonBodyParser = require('@middy/http-json-body-parser');
-const validator = require('@middy/validator');
+const Joi = require('joi');
 
 const {
   logReq,
   logRes,
   errorHandler,
   defineJSONResponse,
-  checkAuthorization
+  checkAuthorization,
+  validateBody
 } = require('./middleware');
 const { ValidationError, logger } = require('./utils');
 
@@ -73,36 +74,11 @@ const createRide = middy(async (event, context) => {
   .use(logReq)
   .use(checkAuthorization)
   .use(
-    validator({
-      eventSchema: {
-        type: 'object',
-        properties: {
-          body: {
-            type: 'object',
-            properties: {
-              fname: { type: 'string' },
-              lname: { type: 'string' },
-              prename: { type: 'string' }
-            },
-            required: ['fname', 'lname']
-          }
-        },
-        required: ['body']
-      },
-      ajvOptions: {
-        strict: true,
-        strictSchema: true,
-        strictNumbers: true,
-        strictTypes: true,
-        strictTuples: true,
-        strictRequired: true,
-        useDefaults: false,
-        coerceTypes: false,
-        allErrors: true,
-        messages: true,
-        removeAdditional: true
-      }
-    })
+    validateBody(
+      Joi.object({
+        username: Joi.string().alphanum().min(3).max(30).required()
+      })
+    )
   )
   .use(defineJSONResponse)
   .use(logRes)

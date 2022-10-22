@@ -75,4 +75,18 @@ const errorHandler = {
   }
 };
 
-module.exports = { logReq, checkAuthorization, errorHandler, logRes, defineJSONResponse };
+const validateBody = (schema) => ({
+  before: (request) => {
+    const v = schema.validate(request.event.body, { abortEarly: false });
+    logger.info(v);
+  }
+});
+
+module.exports = {
+  logReq,
+  checkAuthorization,
+  errorHandler,
+  logRes,
+  defineJSONResponse,
+  validateBody
+};
