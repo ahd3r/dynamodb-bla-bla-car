@@ -47,7 +47,7 @@ const {
   defineJSONResponse,
   checkAuthorization
 } = require('./middleware');
-const { ValidationError } = require('./utils');
+const { ValidationError, logger } = require('./utils');
 
 const { SECRET, TOKEN, TABLE_NAME } = process.env;
 
@@ -63,6 +63,7 @@ const getRides = middy(async (event, context) => {
   .use(errorHandler);
 
 const createRide = middy(async (event, context) => {
+  logger.info({ body: event.body });
   throw new ValidationError('Just No');
   return {
     statusCode: 201,
