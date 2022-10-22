@@ -7,6 +7,7 @@ class ServerError extends Error {
     super(msg);
     this.type = 'ServerError';
     this.status = 500;
+    this.internal = true;
   }
 }
 
@@ -20,6 +21,7 @@ class ValidationError extends Error {
     }
     this.type = 'ValidationError';
     this.status = 400;
+    this.internal = true;
   }
 }
 

@@ -47,9 +47,9 @@ const checkAuthorization = {
 const errorHandler = {
   onError: (request) => {
     console.error(request.error);
-    if (!request.error.status) {
-      if (request.error.details) {
-        request.error = new ValidationError(request.error.details);
+    if (!request.error.internal) {
+      if (request.error.cause) {
+        request.error = new ValidationError(request.error.cause);
       } else {
         request.error = new ServerError(request.error.message || request.error);
       }
