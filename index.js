@@ -75,7 +75,7 @@ const createRide = middy(async (event, context) => {
   .use(
     validateBody(
       Joi.object({
-        username: Joi.string().alphanum().min(3).max(30).required(),
+        username: Joi.string().required(),
         name: Joi.string().optional()
       })
     )
