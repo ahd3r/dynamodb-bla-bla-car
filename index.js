@@ -84,8 +84,8 @@ const createRide = middy(async (event, context) => {
             },
             required: ['fname', 'lname']
           }
-        },
-        required: ['body']
+        }
+        // required: ['body']
       }
     })
   )
