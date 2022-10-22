@@ -63,6 +63,7 @@ const getRides = middy(async (event, context) => {
   .use(errorHandler);
 
 const createRide = middy(async (event, context) => {
+  logger.info({ body: event.body });
   return {
     statusCode: 201,
     body: { data: 'createRide' }
