@@ -94,7 +94,11 @@ const createRide = middy(async (event, context) => {
         strictNumbers: true,
         strictTypes: true,
         strictTuples: true,
-        strictRequired: true
+        strictRequired: true,
+        useDefaults: false,
+        coerceTypes: false,
+        allErrors: true,
+        messages: true
       }
     })
   )
