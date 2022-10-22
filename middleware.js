@@ -77,8 +77,11 @@ const errorHandler = {
 
 const validateBody = (schema) => ({
   before: (request) => {
-    const v = schema.validate(request.event.body, { abortEarly: false });
-    logger.info(v);
+    const { value, error } = schema.validate(request.event.body, { abortEarly: false });
+    if (error) {
+      throw new ValidationError(error.details);
+    }
+    request.event.body = value;
   }
 });
 

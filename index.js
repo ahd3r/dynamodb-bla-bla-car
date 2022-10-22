@@ -48,7 +48,7 @@ const {
   checkAuthorization,
   validateBody
 } = require('./middleware');
-const { ValidationError, logger } = require('./utils');
+const { logger } = require('./utils');
 
 const { SECRET, TOKEN, TABLE_NAME } = process.env;
 
@@ -64,7 +64,6 @@ const getRides = middy(async (event, context) => {
   .use(errorHandler);
 
 const createRide = middy(async (event, context) => {
-  logger.info({ body: event.body });
   return {
     statusCode: 201,
     body: { data: 'createRide' }
@@ -76,7 +75,8 @@ const createRide = middy(async (event, context) => {
   .use(
     validateBody(
       Joi.object({
-        username: Joi.string().alphanum().min(3).max(30).required()
+        username: Joi.string().alphanum().min(3).max(30).required(),
+        name: Joi.string().optional()
       })
     )
   )
