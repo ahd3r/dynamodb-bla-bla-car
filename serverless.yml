@@ -1,4 +1,4 @@
-service: blablacar2
+service: blablacar
 
 frameworkVersion: '3'
 
@@ -32,7 +32,7 @@ provider:
 functions:
   createRide:
     handler: src/index.createRide
-    role: lambdaRole7
+    role: lambdaRole8
     events:
       - httpApi:
           path: /ride
@@ -40,11 +40,11 @@ functions:
 
 resources:
   Resources:
-    lambdaRole7:
+    lambdaRole8:
       Type: AWS::IAM::Role
       Properties:
         Path: /
-        RoleName: lambdaRole7
+        RoleName: lambdaRole8
         AssumeRolePolicyDocument:
           Version: '2012-10-17'
           Statement:
@@ -129,4 +129,4 @@ resources:
                 KeyType: RANGE
             Projection:
                 ProjectionType: 'ALL'
-        TableName: ${self:service}-table2
+        TableName: ${self:service}-table
