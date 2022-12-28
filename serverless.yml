@@ -23,6 +23,7 @@ provider:
   logRetentionInDays: 14
   architecture: arm64
   versionFunctions: false
+  stage: prod
   environment:
     SECRET: secret-test-test-test
     TOKEN: token-test-test-test
