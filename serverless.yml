@@ -31,7 +31,7 @@ provider:
 
 functions:
   createRide:
-    handler: index.createRide
+    handler: src/index.createRide
     role: lambdaRole5
     events:
       - httpApi:
