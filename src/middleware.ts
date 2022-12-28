@@ -1,7 +1,7 @@
 import { logger, ValidationError, ServerError } from './utils/utils';
 
 export const logReq = {
-  before: ({ event, context }) => {
+  before: ({ event, context }: any) => {
     logger.info({
       type: 'request',
       awsRequestId: context.awsRequestId,

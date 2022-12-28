@@ -41,6 +41,8 @@
     "typescript": "^4.9.4"
   },
   "husky": {
-    "pre-commit": "npm run check && npm run format"
+    "hooks": {
+      "pre-commit": "npm run check && npm run format"
+    }
   }
 }

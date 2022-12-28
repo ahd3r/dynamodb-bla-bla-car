@@ -7,7 +7,7 @@ export class ServerError extends Error {
   public status = 500;
   public internal = true;
 
-  constructor(msg) {
+  constructor(msg: string) {
     super(msg);
   }
 }
@@ -16,9 +16,9 @@ export class ValidationError extends Error {
   public type = 'ValidationError';
   public status = 400;
   public internal = true;
-  public errors: string[];
+  public errors: string[] | undefined;
 
-  constructor(msg) {
+  constructor(msg: string | string[]) {
     super(Array.isArray(msg) ? 'ValidationArrayError' : msg);
     if (Array.isArray(msg)) {
       this.errors = msg;
