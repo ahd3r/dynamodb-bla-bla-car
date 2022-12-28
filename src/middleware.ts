@@ -1,4 +1,5 @@
 import * as jwt from 'jsonwebtoken';
+import { ZodObject } from 'zod';
 
 import { logger, ValidationError, ServerError } from './utils/utils';
 
@@ -92,10 +93,12 @@ export const errorHandler = {
 export const validateBody = (schema) => ({
   before: (request) => {
     request.event.body = request.event.body || {};
-    const { value, error } = schema.validate({ abortEarly: false });
+    const { data, error } = schema.safeParse(request.event.body);
+    logger.info({ error });
+    logger.info({ data });
     if (error) {
       throw new ValidationError(error.details);
     }
-    request.event.body = value;
+    request.event.body = data;
   }
 });
