@@ -129,4 +129,4 @@ resources:
                 KeyType: RANGE
             Projection:
                 ProjectionType: 'ALL'
-        TableName: ${self:service}-table
+        TableName: ${self:service}-table2
