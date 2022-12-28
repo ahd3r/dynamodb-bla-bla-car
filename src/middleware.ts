@@ -1,6 +1,6 @@
-const { logger, ValidationError, ServerError } = require('./utils');
+import { logger, ValidationError, ServerError } from './utils/utils';
 
-const logReq = {
+export const logReq = {
   before: ({ event, context }) => {
     logger.info({
       type: 'request',
@@ -15,7 +15,7 @@ const logReq = {
   }
 };
 
-const logRes = {
+export const logRes = {
   after: ({ event, context, response }) => {
     logger.info({
       type: 'response',
@@ -27,7 +27,7 @@ const logRes = {
   }
 };
 
-const defineJSONResponse = {
+export const defineJSONResponse = {
   after: ({ response }) => {
     response.headers = {
       'Content-Type': 'application/json'
@@ -36,7 +36,7 @@ const defineJSONResponse = {
   }
 };
 
-const checkAuthorization = {
+export const checkAuthorization = {
   before: ({ event }) => {
     if (event.headers.authorization !== process.env.SECRET) {
       throw new ValidationError('Wrong authorization token');
@@ -44,7 +44,7 @@ const checkAuthorization = {
   }
 };
 
-const errorHandler = {
+export const errorHandler = {
   onError: (request) => {
     logger.error(request.error);
     if (!request.error.internal) {
@@ -75,21 +75,13 @@ const errorHandler = {
   }
 };
 
-const validateBody = (schema) => ({
+export const validateBody = (schema) => ({
   before: (request) => {
-    const { value, error } = schema.validate(request.event.body, { abortEarly: false });
+    request.event.body = request.event.body || {};
+    const { value, error } = schema.validate({ abortEarly: false });
     if (error) {
       throw new ValidationError(error.details);
     }
     request.event.body = value;
   }
 });
-
-module.exports = {
-  logReq,
-  checkAuthorization,
-  errorHandler,
-  logRes,
-  defineJSONResponse,
-  validateBody
-};

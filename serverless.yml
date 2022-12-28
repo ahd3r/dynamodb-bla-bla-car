@@ -6,6 +6,14 @@ package:
   individually: true
   excludeDevDependencies: true
 
+plugins:
+  - serverless-esbuild
+
+custom:
+  esbuild:
+    bundle: true
+    minify: true
+
 provider:
   name: aws
   region: us-east-1
@@ -22,13 +30,6 @@ provider:
     TABLE_NAME: ${self:service}-table
 
 functions:
-  getRides:
-    handler: index.getRides
-    role: lambdaRole5
-    events:
-      - httpApi:
-          path: /rides
-          method: get
   createRide:
     handler: index.createRide
     role: lambdaRole5
