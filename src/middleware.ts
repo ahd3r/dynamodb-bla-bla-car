@@ -1,3 +1,5 @@
+import * as jwt from 'jsonwebtoken';
+
 import { logger, ValidationError, ServerError } from './utils/utils';
 
 export const logReq = {
@@ -38,9 +40,21 @@ export const defineJSONResponse = {
 
 export const checkAuthorization = {
   before: ({ event }) => {
-    if (event.headers.authorization !== process.env.SECRET) {
+    if (!event.headers.authorization) {
       throw new ValidationError('Wrong authorization token');
     }
+    let jwtData;
+    try {
+      jwtData = jwt.verify(event.headers.authorization, process.env.SECRET as string);
+    } catch (e) {
+      throw new ValidationError('Wrong jwt authorization token');
+    }
+    const { email } = jwtData;
+    // TODO change this check
+    if (email !== 'example@example.com') {
+      throw new ValidationError('User with this email does not exist');
+    }
+    event.user = { email: 'example@example.com' };
   }
 };
 
