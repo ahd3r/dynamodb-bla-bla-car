@@ -32,7 +32,7 @@ provider:
 functions:
   createRide:
     handler: src/index.createRide
-    role: lambdaRole5
+    role: lambdaRole6
     events:
       - httpApi:
           path: /ride
@@ -40,11 +40,11 @@ functions:
 
 resources:
   Resources:
-    lambdaRole5:
+    lambdaRole6:
       Type: AWS::IAM::Role
       Properties:
         Path: /
-        RoleName: lambdaRole5
+        RoleName: lambdaRole6
         AssumeRolePolicyDocument:
           Version: '2012-10-17'
           Statement:
