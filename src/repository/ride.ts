@@ -44,7 +44,8 @@ export const createRideRepo = async (
       }
     })
     .promise();
-  logger.info(createdRide);
+  logger.info('createdRide');
+  logger.info({ createdRide });
   return createdRide;
 };
 
