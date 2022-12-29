@@ -24,29 +24,28 @@ export interface Ride {
   distanceMeters: number;
   timeMinutes: number;
   description?: string;
-  created: Date;
+  created: number;
 }
 
 const tableName = process.env.TABLE_NAME as string;
 
 export const createRideRepo = async (
   ride: Omit<Ride, 'id' | 'entity' | 'created' | 'passengers' | 'status'>
-): Promise<PutItemOutput> => {
-  const createdRide: PutItemOutput = await client
+): Promise<Ride> => {
+  const createdRideEntity: Ride = {
+    ...ride,
+    created: Date.now(),
+    id: uuid(),
+    entity: Entities.RIDE,
+    status: RideStatus.WAITING_PASSENGERS
+  };
+  await client
     .put({
       TableName: tableName,
-      Item: {
-        ...ride,
-        created: Date.now(),
-        id: uuid(),
-        entity: Entities.RIDE,
-        status: RideStatus.WAITING_PASSENGERS
-      }
+      Item: createdRideEntity
     })
     .promise();
-  logger.info('createdRide');
-  logger.info({ createdRide });
-  return createdRide;
+  return createdRideEntity;
 };
 
 export const updateRideRepo = () => {};
