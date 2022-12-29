@@ -94,10 +94,8 @@ export const validateBody = (schema) => ({
   before: (request) => {
     request.event.body = request.event.body || {};
     const { data, error } = schema.safeParse(request.event.body);
-    logger.info({ error });
-    logger.info({ data });
     if (error) {
-      throw new ValidationError(error.details);
+      throw new ValidationError(error.issues);
     }
     request.event.body = data;
   }
