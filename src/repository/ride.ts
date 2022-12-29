@@ -1,5 +1,4 @@
 import { PutItemOutput } from 'aws-sdk/clients/dynamodb';
-import moment from 'moment';
 import { v4 as uuid } from 'uuid';
 
 import { client, Entities } from './db';
@@ -38,7 +37,7 @@ export const createRideRepo = async (
       TableName: tableName,
       Item: {
         ...ride,
-        created: moment.utc().toDate(),
+        created: Date.now(),
         id: uuid(),
         entity: Entities.RIDE,
         status: RideStatus.WAITING_PASSENGERS
