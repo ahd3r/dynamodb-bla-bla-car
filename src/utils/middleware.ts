@@ -1,7 +1,8 @@
 import * as jwt from 'jsonwebtoken';
-import { ZodObject } from 'zod';
+import { Admin, getAdminByEmailRepo } from '../repository/admin';
+import { getUserByEmailRepo, User } from '../repository/user';
 
-import { logger, ValidationError, ServerError } from './utils/utils';
+import { logger, ValidationError, ServerError } from './utils';
 
 export const logReq = {
   before: ({ event, context }: any) => {
@@ -40,7 +41,7 @@ export const defineJSONResponse = {
 };
 
 export const checkAuthorization = {
-  before: ({ event }) => {
+  before: async ({ event }) => {
     if (!event.headers.authorization) {
       throw new ValidationError('Wrong authorization token');
     }
@@ -50,12 +51,17 @@ export const checkAuthorization = {
     } catch (e) {
       throw new ValidationError('Wrong jwt authorization token');
     }
-    const { email } = jwtData;
-    // TODO change this check
-    if (email !== 'example@example.com') {
-      throw new ValidationError('User with this email does not exist');
+    const { email, type } = jwtData;
+    let user: Admin | User | undefined;
+    if (type === 'admin') {
+      user = await getAdminByEmailRepo(email);
+    } else {
+      user = await getUserByEmailRepo(email);
     }
-    event.user = { email: 'example@example.com' };
+    if (!user) {
+      throw new ValidationError(`User with ${email} email doesn't exist`);
+    }
+    event.user = { ...user, type };
   }
 };
 

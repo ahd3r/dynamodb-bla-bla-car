@@ -1,49 +1,7 @@
-// TODO
-/** DB
- * indexes
- *  global secondary index
- *  local secondary index
- * transactions
- * analytics
- *  group
- *  count
- *  sum
- *  avg
- *  min
- *  max
- *  fields
- *  sorting
- * nested object
- * relationship
- *  one to one
- *  one to many
- *  many to many
- * pagination
- * advanced filtering
- *  like
- *    start with
- *    end with
- *    consist
- *  grater then
- *  grater or equal then
- *  less then
- *  less or equal then
- *  not equal
- *  equal
- *  in
- *  not in
- *  and
- *  or
- * steams
- */
-/** IMPLEMENTATION
- * realtime (event bridge)
- * realtime (api gateway (websocket))
- * (no server approach)
- */
 import middy from '@middy/core';
 import jsonBodyParser from '@middy/http-json-body-parser';
 import { Context, APIGatewayProxyResult, APIGatewayEvent } from 'aws-lambda';
+import { z } from 'zod';
 
 import {
   logReq,
@@ -52,9 +10,10 @@ import {
   defineJSONResponse,
   checkAuthorization,
   validateBody
-} from './middleware';
-import { createRideRepo } from './repository/ride';
-import { createRideData } from './utils/ride-validator';
+} from '../../../utils/middleware';
+import { createRideRepo } from '../../../repository/ride';
+import { createRideData } from '../../../utils/validation/ride';
+import { User } from '../../../repository/user';
 
 export const getAdmin = middy();
 export const getAdmins = middy();
@@ -92,8 +51,9 @@ export const addPassengerToRide = middy();
 export const updateRide = middy();
 export const createRide = middy(
   async (event: APIGatewayEvent, context: Context): Promise<APIGatewayProxyResult> => {
-    const dataToCreateRide: any = event.body;
-    const res: any = await createRideRepo(dataToCreateRide);
+    const dataToCreateRide: z.infer<typeof createRideData> = event.body as any;
+    const authUser: User = (event as any).user;
+    const res: any = await createRideRepo({ ...dataToCreateRide, driverId: authUser.id });
     return {
       statusCode: 201,
       body: res

@@ -28,6 +28,7 @@ provider:
     SECRET: secret-test-test-test
     TOKEN: token-test-test-test
     TABLE_NAME: ${self:service}-table
+    REGION: ${self:provider.region}
 
 functions:
   createRide:
@@ -40,6 +41,7 @@ functions:
 
 resources:
   Resources:
+    # Very restricted
     lambdaRole8:
       Type: AWS::IAM::Role
       Properties:

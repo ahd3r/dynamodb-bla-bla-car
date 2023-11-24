@@ -25,3 +25,18 @@ export class ValidationError extends Error {
     }
   }
 }
+
+export const filterAndSortByAppearance = <T extends { id: string }>(arrayWithId: T[]): T[] => {
+  const usesId: string[] = [];
+  const res: [T, number][] = [];
+  arrayWithId.forEach((el) => {
+    const indexOfRes = usesId.indexOf(el.id);
+    if (indexOfRes !== -1) {
+      res[indexOfRes][1]++;
+    } else {
+      usesId.push(el.id);
+      res.push([el, 1]);
+    }
+  });
+  return res.sort((t1, t2) => t1[1] - t2[1]).map((el) => el[0]);
+};
